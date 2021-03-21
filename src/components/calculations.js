@@ -66,26 +66,22 @@ export const areaBelow526 = data.features.filter(
   (feature) => feature.properties.area_ >= 200 && feature.properties.area_ < 526
 );
 
-// const area = areaBelow526.map((feature) => (
-//   <div>{feature.properties.area_}</div>
-// ));
-
 export const areaCount = (areaBelow50, areaBelow200, areaBelow526) => {
   return [
     {
       area: areaBelow50.length,
       colors: ["#b0e0e6", "#4169e1"],
-      name: "0 to 49 metre sq",
+      name: "Size 0 to 49",
     },
     {
       area: areaBelow200.length,
       colors: ["#ff47ab", "#e0064e"],
-      name: "50 to 199 metre sq",
+      name: "Size 50 to 199",
     },
     {
       area: areaBelow526.length,
       colors: ["#ffd847", "#e0a106"],
-      name: "200 to 526 metre sq",
+      name: "Size 200 to 526",
     },
   ];
 };

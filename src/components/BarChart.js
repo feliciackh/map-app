@@ -9,22 +9,27 @@ import {
 } from "./calculations";
 import styled, { css } from "styled-components";
 
+const MainContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
 const Container = styled.div`
   max-width: 500px;
-  height: 500px;
+  height: 310px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   padding: 2rem;
-  margin: 2rem;
-  border: 1px solid #b22222;
+  margin: 1.5rem;
+  border: 1px solid #ccc;
   border-radius: 10px;
+  box-shadow: 3px 3px#ccc;
 `;
 
 const Title = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-decoration: underline;
-  font-style: italic;
   display: flex;
   justify-content: center;
 `;
@@ -76,17 +81,17 @@ const BaseLine = styled.div`
   background-color: black;
 `;
 
-const BarChart = () => {
+const BarChart = ({ setMaterial }) => {
   return (
-    <>
+    <MainContainer>
       <Container>
         <Title>Number of ramps for each construction material</Title>
         <ChartContainer>
           {materialsCount(materialsObject).map(
             ({ material, colors, name }, i) => {
               return (
-                <BarContainer key={i}>
-                  <Text color={colors[1]}>{material} ramp(s)</Text>
+                <BarContainer key={i} onClick={() => setMaterial(name)}>
+                  <Text color={colors[1]}>{material}</Text>
                   <Text color={colors[1]}>{name}</Text>
                   <Bar height={material} colors={colors} />
                 </BarContainer>
@@ -96,7 +101,6 @@ const BarChart = () => {
         </ChartContainer>
         <BaseLine />
       </Container>
-
       <Container>
         <Title>Number of ramps per size category</Title>
         <ChartContainer>
@@ -104,9 +108,9 @@ const BarChart = () => {
             ({ area, colors, name }, i) => {
               return (
                 <BarContainer key={i}>
-                  <Text color={colors[1]}>{area} ramp(s)</Text>
+                  <Text color={colors[1]}>{area}</Text>
                   <Text color={colors[1]}>{name}</Text>
-                  <Bar height={area * 1.5} colors={colors} />
+                  <Bar height={area} colors={colors} />
                 </BarContainer>
               );
             }
@@ -114,7 +118,7 @@ const BarChart = () => {
         </ChartContainer>
         <BaseLine />
       </Container>
-    </>
+    </MainContainer>
   );
 };
 
