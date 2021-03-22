@@ -6,8 +6,7 @@ import styled from "styled-components";
 import { connect, useSelector } from "react-redux";
 
 const MapboxMap = ReactMapboxGl({
-  accessToken:
-    "pk.eyJ1IjoiZmVsaWNpYWNraCIsImEiOiJja21pMWFjNmcwY3Z5MnduYTAwbGF1enBjIn0.vdbG9OvOKPyIL-Yrgs9WAw",
+  accessToken: process.env.mapApiToken,
 });
 
 const mapStyle = {
@@ -68,7 +67,6 @@ const Map = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [center, setCenter] = useState([153.399994, -28.016666]);
   const [properties, setProperties] = useState({});
-
   const { material, size } = useSelector((state) => state);
 
   let geojson = data;
