@@ -5,9 +5,10 @@ import {
   areaBelow526,
   areaBelow200,
   areaBelow50,
-  areaCount,
+  areasCount,
 } from "./calculations";
 import styled, { css } from "styled-components";
+import { connect } from "react-redux";
 
 const MainContainer = styled.div`
   display: flex;
@@ -81,19 +82,27 @@ const BaseLine = styled.div`
   background-color: black;
 `;
 
-const BarChart = ({ setMaterial }) => {
+const BarChart = ({ dispatch }) => {
   return (
     <MainContainer>
       <Container>
         <Title>Number of ramps for each construction material</Title>
         <ChartContainer>
           {materialsCount(materialsObject).map(
-            ({ material, colors, name }, i) => {
+            ({ materialCount, colors, name }, i) => {
               return (
-                <BarContainer key={i} onClick={() => setMaterial(name)}>
-                  <Text color={colors[1]}>{material}</Text>
+                <BarContainer
+                  key={i}
+                  onClick={() =>
+                    dispatch({
+                      type: "MATERIAL",
+                      payload: name,
+                    })
+                  }
+                >
+                  <Text color={colors[1]}>{materialCount}</Text>
                   <Text color={colors[1]}>{name}</Text>
-                  <Bar height={material} colors={colors} />
+                  <Bar height={materialCount * 1.5} colors={colors} />
                 </BarContainer>
               );
             }
@@ -104,13 +113,21 @@ const BarChart = ({ setMaterial }) => {
       <Container>
         <Title>Number of ramps per size category</Title>
         <ChartContainer>
-          {areaCount(areaBelow50, areaBelow200, areaBelow526).map(
-            ({ area, colors, name }, i) => {
+          {areasCount(areaBelow50, areaBelow200, areaBelow526).map(
+            ({ areaCount, colors, filteredArray, name }, i) => {
               return (
-                <BarContainer key={i}>
-                  <Text color={colors[1]}>{area}</Text>
+                <BarContainer
+                  key={i}
+                  onClick={() =>
+                    dispatch({
+                      type: "SIZE",
+                      payload: filteredArray,
+                    })
+                  }
+                >
+                  <Text color={colors[1]}>{areaCount}</Text>
                   <Text color={colors[1]}>{name}</Text>
-                  <Bar height={area} colors={colors} />
+                  <Bar height={areaCount * 1.5} colors={colors} />
                 </BarContainer>
               );
             }
@@ -122,4 +139,4 @@ const BarChart = ({ setMaterial }) => {
   );
 };
 
-export default BarChart;
+export default connect((state) => state)(BarChart);

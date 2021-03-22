@@ -3,6 +3,7 @@ import ReactMapboxGl, { GeoJSONLayer, Popup } from "react-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { data } from "../data/boat_ramps.json";
 import styled from "styled-components";
+import { connect, useSelector } from "react-redux";
 
 const MapboxMap = ReactMapboxGl({
   accessToken:
@@ -43,11 +44,7 @@ const polygonPaint = {
   "fill-opacity": 0.3,
 };
 
-const filteredData = (material) => {
-  if (!material) {
-    return data;
-  }
-
+const filteredDataByMat = (material) => {
   const myData = Object.assign({ ...data });
 
   myData.features = myData.features.filter(
@@ -58,12 +55,28 @@ const filteredData = (material) => {
   return myData;
 };
 
-export const Map = ({ material }) => {
+const filteredDataBySize = (features) => {
+  const myData = Object.assign({ ...data });
+
+  myData.features = features;
+  myData.totalFeatures = myData.features.length;
+
+  return myData;
+};
+
+const Map = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [center, setCenter] = useState([153.399994, -28.016666]);
   const [properties, setProperties] = useState({});
 
-  const geojson = filteredData(material);
+  const { material, size } = useSelector((state) => state);
+
+  let geojson = data;
+  if (size) {
+    geojson = filteredDataBySize(size);
+  } else if (material) {
+    geojson = filteredDataByMat(material);
+  }
 
   const onClickHandler = (map, evt) => {
     const features = map.queryRenderedFeatures(evt.point);
@@ -105,3 +118,5 @@ export const Map = ({ material }) => {
     </>
   );
 };
+
+export default connect((state) => state)(Map);

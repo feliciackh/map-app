@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import BarChart from "../components/BarChart";
-import { Map } from "../components/Map";
+import Map from "../components/Map";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
 const StyledTitle = styled.div`
   background: white;
@@ -18,14 +19,13 @@ const StyledTitle = styled.div`
 `;
 
 const Dashboard = () => {
-  const [material, setMaterial] = useState(null);
   return (
     <>
       <StyledTitle>Welcome to your dashboard</StyledTitle>
-      <Map material={material} />
-      <BarChart setMaterial={setMaterial} />
+      <Map />
+      <BarChart />
     </>
   );
 };
 
-export default Dashboard;
+export default connect((state) => state)(Dashboard);

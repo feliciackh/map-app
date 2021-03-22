@@ -1,34 +1,20 @@
 import { createStore } from "redux";
-import { createWrapper, HYDRATE } from "next-redux-wrapper";
+import { createWrapper } from "next-redux-wrapper";
 
 // create your reducer
-const reducer = (state = { tick: "init" }, action) => {
+const reducer = (state = { material: null, size: null }, action) => {
   switch (action.type) {
-    case HYDRATE:
-      // if (action.payload.app === 'init') delete action.payload.app;
-      // if (action.payload.page === 'init') delete action.payload.page;
+    case "MATERIAL":
       return {
         ...state,
-        server: {
-          ...state.server,
-          ...action.payload.server,
-        },
+        material: action.payload,
+        size: null,
       };
-    case "SERVER_ACTION":
+    case "SIZE":
       return {
         ...state,
-        server: {
-          ...state.server,
-          tick: action.payload,
-        },
-      };
-    case "CLIENT_ACTION":
-      return {
-        ...state,
-        client: {
-          ...state.client,
-          tick: action.payload,
-        },
+        size: action.payload,
+        material: null,
       };
     default:
       return state;
@@ -36,7 +22,7 @@ const reducer = (state = { tick: "init" }, action) => {
 };
 
 // return new Redux server-side Store instance each time it's called, also provides the Request and Response objects as options to makeStore
-const makeStore = (context) => createStore(reducer);
+const makeStore = () => createStore(reducer);
 
 // export an assembled wrapper
 export const wrapper = createWrapper(makeStore, { debug: true });
